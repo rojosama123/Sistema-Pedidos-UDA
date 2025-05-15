@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Pedido;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+
+class PedidoController extends Controller
+{
+    public function index()
+    {
+     $hoy = Carbon::now()->toDateString(); // '2025-05-14'
+
+    $pedidos = Pedido::whereDate('fecha', $hoy)->get();
+
+    return view('dashboard', compact('pedidos'));
+    }
+}

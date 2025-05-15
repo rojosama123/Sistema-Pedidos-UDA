@@ -72,40 +72,48 @@
                             <th class="px-4 py-2 border-b">Menú</th>
                             <th class="px-4 py-2 border-b">Fecha</th>
                             <th class="px-4 py-2 border-b">Hora</th>
-                            <th class="px-4 py-2 border-b">Nota del cliente</th>
+                            <th class="px-4 py-2 border-b">Nota del Cliente</th> {{-- ← Este es el que faltaba o estaba incorrecto --}}
                             <th class="px-4 py-2 border-b">Estado</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Fila de ejemplo -->
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-2 border-b">001</td>
-                            <td class="px-4 py-2 border-b">María López</td>
-                            <td class="px-4 py-2 border-b">Arroz con pollo</td>
-                            <td class="px-4 py-2 border-b">2025-05-12</td>
-                            <td class="px-4 py-2 border-b">12:30</td>
-                            <td class="px-4 py-2 border-b">Sin cebolla, por favor</td>
-                            <td class="px-4 py-2 border-b">
-                                <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                    Entregado
-                                </span>
-                            </td>
-                        </tr>
+                        @php
+                        $contador = 1;
+                    @endphp
 
-                        <!-- Puedes duplicar esta fila y cambiar los valores para otros estados -->
+                    @forelse ($pedidos as $pedido)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-2 border-b">002</td>
-                            <td class="px-4 py-2 border-b">Juan Pérez</td>
-                            <td class="px-4 py-2 border-b">Pastel de choclo</td>
-                            <td class="px-4 py-2 border-b">2025-05-12</td>
-                            <td class="px-4 py-2 border-b">13:00</td>
-                            <td class="px-4 py-2 border-b">Agregar servilleta</td>
+                            <td class="px-4 py-2 border-b">{{ str_pad($contador++, 3, '0', STR_PAD_LEFT) }}</td>
+                            <td class="px-4 py-2 border-b">{{ $pedido->nombre }}</td>
+                            <td class="px-4 py-2 border-b">{{ $pedido->menu }}</td>
+                            <td class="px-4 py-2 border-b">{{ $pedido->fecha }}</td>
+                            <td class="px-4 py-2 border-b">{{ $pedido->hora }}</td>
                             <td class="px-4 py-2 border-b">
-                                <span class="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                    Listo para retirar
+                                @if (!empty($pedido->nota_cliente))
+                                    {{ $pedido->nota_cliente }}
+                                @else
+                                    <span class="text-gray-400 italic">📝 Sin nota</span>
+                                @endif
+                            </td>
+                            <td class="px-4 py-2 border-b">
+                                @php
+                                    $estilos = [
+                                        'Entregado' => 'bg-green-100 text-green-800',
+                                        'En Preparación' => 'bg-yellow-100 text-yellow-800',
+                                        'Listo para retirar' => 'bg-blue-100 text-blue-800',
+                                        'Cancelado' => 'bg-red-100 text-red-800',
+                                    ];
+                                @endphp
+                                <span class="px-3 py-1 rounded-full text-sm font-medium {{ $estilos[$pedido->estado] ?? 'bg-gray-100 text-gray-800' }}">
+                                    {{ $pedido->estado }}
                                 </span>
                             </td>
                         </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-gray-500">No hay pedidos registrados para hoy.</td>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
             </div>
