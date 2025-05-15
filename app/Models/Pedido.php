@@ -9,7 +9,7 @@ class Pedido extends Model
 {
     protected $table = 'pedidos';
     protected $fillable = [
-        'nombre', 'menu', 'fecha', 'hora', 'nota_cliente', 'estado'
+        'nombre', 'menu', 'fecha', 'hora', 'nota_cliente', 'estado', 'casino'
     ];
 
 }

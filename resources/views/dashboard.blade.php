@@ -72,7 +72,8 @@
                             <th class="px-4 py-2 border-b">Menú</th>
                             <th class="px-4 py-2 border-b">Fecha</th>
                             <th class="px-4 py-2 border-b">Hora</th>
-                            <th class="px-4 py-2 border-b">Nota del Cliente</th> {{-- ← Este es el que faltaba o estaba incorrecto --}}
+                            <th class="px-4 py-2 border-b">Nota del Cliente</th> 
+                            <th class="px-4 py-2 border-b">Casino</th>
                             <th class="px-4 py-2 border-b">Estado</th>
                         </tr>
                     </thead>
@@ -95,6 +96,7 @@
                                     <span class="text-gray-400 italic">📝 Sin nota</span>
                                 @endif
                             </td>
+                            <td class="px-4 py-2 border-b">{{ $pedido->casino }}</td>
                             <td class="px-4 py-2 border-b">
                                 @php
                                     $estilos = [

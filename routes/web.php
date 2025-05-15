@@ -5,7 +5,7 @@ use App\Http\Controllers\PedidoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 
-// Página de login en /Index
+// Página de login en la raíz
 Route::get('/', function () {
     return view('welcome');
 })->name('login');
