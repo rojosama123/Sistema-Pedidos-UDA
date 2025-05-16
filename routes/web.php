@@ -27,6 +27,8 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/seleccion-casino', function () {
+Route::get('/seleccion_casino', function () {
     return view('seleccion_casino');
 })->middleware('auth')->name('seleccion_casino');
+
+Route::get('/pedidos/casino/{nombre}', [PedidoController::class, 'mostrar'])->name('pedidos.casino');

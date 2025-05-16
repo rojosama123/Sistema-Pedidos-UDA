@@ -16,4 +16,9 @@ class PedidoController extends Controller
 
     return view('dashboard', compact('pedidos'));
     }
+    public function mostrar($nombre)
+    {
+        // Puedes cargar pedidos o simplemente pasar el nombre del casino
+        return view('pedidos.index', ['casino' => ucfirst($nombre)]);
+    }
 }
