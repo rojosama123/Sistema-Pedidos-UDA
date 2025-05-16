@@ -45,7 +45,7 @@
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-                <input type="email" name="email" placeholder="Email" required class="w-full mb-4 px-4 py-2 rounded-full text-gray-800 placeholder-gray-500" />
+                <input type="text" name="email" placeholder="Email" required class="w-full mb-4 px-4 py-2 rounded-full text-gray-800 placeholder-gray-500" />
                 <input type="password" name="password" placeholder="Contraseña" required class="w-full mb-6 px-4 py-2 rounded-full text-gray-800 placeholder-gray-500" />
                 
                 <button type="submit" class="w-full py-2 rounded-full bg-yellow-400 text-gray-800 font-semibold hover:bg-yellow-500 transition duration-300">
