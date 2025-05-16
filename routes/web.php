@@ -11,7 +11,7 @@ Route::get('/', function () {
 })->name('login');
 
 // Procesar login
-Route::post('/login', [LoginController::class, 'login']);
+//Route::post('/login', [LoginController::class, 'store'])->name('login');
 
 // Dashboard protegido con auth
 Route::get('/dashboard', [PedidoController::class, 'index'])
@@ -26,3 +26,7 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/seleccion-casino', function () {
+    return view('seleccion_casino');
+})->middleware('auth')->name('seleccion_casino');
