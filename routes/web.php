@@ -23,3 +23,5 @@ Route::get('/seleccion_casino', function () {
 })->middleware('auth')->name('seleccion_casino');
 
 Route::get('/pedidos/casino/{nombre}', [PedidoController::class, 'mostrar'])->name('pedidos.casino');
+
+Route::get('/historial', [PedidoController::class, 'historial'])->name('historial.pedidos');
