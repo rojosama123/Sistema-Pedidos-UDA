@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
         usuarios_seed::class,
+        pedidos_seed::class,
         ]);
+
     }
 }
