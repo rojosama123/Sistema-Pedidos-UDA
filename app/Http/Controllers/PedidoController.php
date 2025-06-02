@@ -8,29 +8,49 @@ use Illuminate\Support\Carbon;
 
 class PedidoController extends Controller
 {
-    public function index()
+    // === DASHBOARD PRINCIPAL ===
+    public function index(Request $request)
     {
         $hoy = Carbon::now()->toDateString();
 
-        $pedidos = Pedido::whereDate('fecha', $hoy)->paginate(10); 
+        if ($request->filled('casino')) {
+            session(['casino_actual' => $request->casino]);
+        }
 
-        return view('dashboard', compact('pedidos'));
+        $casino = session('casino_actual', 'Casino Norte');
+
+        $pedidos = Pedido::with('detalles') // relación en el modelo Pedido
+            ->whereDate('fecha', $hoy)
+            ->where('casino', $casino)
+            ->orderBy('hora')
+            ->paginate(10);
+
+        return view('dashboard', compact('pedidos', 'casino'));
     }
 
-    public function mostrar($nombre)
+    public function cambiarEstado(Request $request, Pedido $pedido)
     {
-        // Cargar pedidos o simplemente pasar el nombre del casino
-        return view('pedidos.index', ['casino' => ucfirst($nombre)]);
+        $request->validate([
+            'estado' => 'required|string|in:En Preparación,Listo para retirar,Entregado,Cancelado',
+        ]);
+
+        $pedido->estado = $request->estado;
+        $pedido->save();
+
+        return redirect()->back()->with('success', 'Estado del pedido actualizado correctamente.');
     }
 
-
-
-    // Controlador para el historial de pedidos
+    // === HISTORIAL DE PEDIDOS ===
     public function historial(Request $request)
     {
-        $query = Pedido::query();
+        if ($request->filled('casino')) {
+            session(['casino_actual' => $request->casino]);
+        }
 
-        // Filtro por fecha
+        $casino = session('casino_actual', 'Casino Norte');
+
+        $query = Pedido::with('detalles')->where('casino', $casino);
+
         switch ($request->filtro_fecha) {
             case 'hoy':
                 $query->whereDate('fecha', Carbon::today());
@@ -42,27 +62,26 @@ class PedidoController extends Controller
                 $query->whereMonth('fecha', Carbon::now()->month);
                 break;
             case 'rango':
+                // handled below
                 break;
         }
 
-        // Filtro por rango de fechas
         if ($request->fecha_inicio && $request->fecha_fin) {
             $fechaInicio = Carbon::parse($request->fecha_inicio)->startOfDay();
             $fechaFin = Carbon::parse($request->fecha_fin)->endOfDay();
             $query->whereBetween('fecha', [$fechaInicio, $fechaFin]);
         }
 
-        // Filtro por estado
         if ($request->estado && $request->estado !== 'todos') {
             $query->where('estado', $request->estado);
         }
 
-        $pedidos = $query->orderBy('fecha', 'desc')
-                 ->orderBy('hora', 'desc') // <- Añadir esto si usas campo `hora`
-                 ->orderBy('id', 'desc')   // <- Asegura orden aún si misma fecha/hora
-                 ->paginate(10); // paginación
-                                 
+        $orden = $request->get('orden', 'asc'); // 'asc' por defecto
 
-        return view('pedidos.historial', compact('pedidos'));
+        $pedidos = $query->orderBy('id', $orden)->paginate(10);
+
+        return view('pedidos.historial', compact('pedidos', 'casino', 'orden'));
     }
+
+    
 }

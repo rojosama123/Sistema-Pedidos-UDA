@@ -3,13 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pedido extends Model
 {
-    protected $table = 'pedidos';
+    use HasFactory;
+
     protected $fillable = [
-        'nombre', 'menu', 'fecha', 'hora', 'nota_cliente', 'estado', 'casino'
+        'nombre',
+        'fecha',
+        'hora',
+        'estado',
+        'casino',
     ];
 
+    // Relación: un pedido tiene muchos detalles
+    public function detalles()
+    {
+        return $this->hasMany(PedidoDetalle::class);
+    }
 }

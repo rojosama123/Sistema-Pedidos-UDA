@@ -11,12 +11,11 @@ class pedidos extends Migration
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('menu');
             $table->date('fecha');
             $table->time('hora');
-            $table->text('nota_cliente')->nullable();
             $table->string('estado');
-            $table->string('casino');   
+            $table->string('casino');  
+            $table->timestamps(); 
         });
     }
 

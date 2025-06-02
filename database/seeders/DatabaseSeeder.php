@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Pedido;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,8 +19,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
         usuarios_seed::class,
-        pedidos_seed::class,
-        ]);
+        PedidoSeeder::class,]);
 
     }
 }
