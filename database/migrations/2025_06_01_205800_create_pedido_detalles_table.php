@@ -12,7 +12,7 @@ class CreatePedidoDetallesTable extends Migration
             $table->id();
             $table->foreignId('pedido_id')->constrained('pedidos')->onDelete('cascade');
             $table->string('plato');
-            $table->decimal('precio', 8, 2)->default(0.00);
+            $table->decimal('precio', 10, 0)->default(0);
             $table->string('nota_cliente')->nullable();
             $table->timestamps();
 

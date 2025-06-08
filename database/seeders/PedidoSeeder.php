@@ -34,7 +34,7 @@ class PedidoSeeder extends Seeder
                         'Lasaña de carne', 'Pollo al curry', 'Ensalada César', 'Sopa de lentejas',
                         'Fideos al pesto', 'Cazuela de vacuno', 'Tarta de verduras', 'Empanada de pino'
                     ]),
-                    'precio' => $faker->randomFloat(2, 2, 8),
+                    'precio' => $faker->randomFloat(0, 2600, 13000),
                     'nota_cliente' => $faker->boolean(70) ? $faker->sentence(4) : null,
                 ]);
             }

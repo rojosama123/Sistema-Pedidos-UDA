@@ -128,6 +128,7 @@
                             <th class="px-4 py-3">Fecha</th>
                             <th class="px-4 py-3">Hora</th>
                             <th class="px-4 py-3">Casino</th>
+                            <th class="px-4 py-3">Precio Total</th>
                             <th class="px-4 py-3">Estado</th>
                             <th class="px-4 py-3">Acciones</th>
                         </tr>
@@ -144,6 +145,9 @@
                                 <td class="px-4 py-3">{{ $pedido->fecha }}</td>
                                 <td class="px-4 py-3">{{ $pedido->hora }}</td>
                                 <td class="px-4 py-3">{{ $pedido->casino }}</td>
+                                <td class="px-4 py-3">
+                                    ${{ number_format($pedido->detalles->sum('precio'), 0, ',', '.') }}
+                                </td>
                                 <td class="px-4 py-3">
                                     @php
                                         $estilos = [
