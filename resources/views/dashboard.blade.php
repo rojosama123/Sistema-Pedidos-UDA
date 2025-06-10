@@ -77,7 +77,7 @@
 
                 <template x-if="pedidoSeleccionado">
                     <div class="space-y-2">
-                        <div><strong>👤 Nombre:</strong> <span x-text="pedidoSeleccionado.nombre"></span></div>
+                        <div><strong>👤 Nombre:</strong> <span x-text="pedidoSeleccionado.usuario?.nombre || 'N/D'"></span></div>
                         <div><strong>📅 Fecha:</strong> <span x-text="pedidoSeleccionado.fecha"></span></div>
                         <div><strong>🕒 Hora:</strong> <span x-text="pedidoSeleccionado.hora"></span></div>
                         <div><strong>🏢 Casino:</strong> <span x-text="pedidoSeleccionado.casino"></span></div>
@@ -141,7 +141,7 @@
                         @forelse ($pedidos as $pedido)
                             <tr class="hover:bg-gray-50 border-t">
                                 <td class="px-4 py-3">{{ $contador++ }}</td>
-                                <td class="px-4 py-3">{{ $pedido->nombre }}</td>
+                                <td class="px-4 py-3">{{ $pedido->usuario->nombre ?? 'N/D' }}</td>
                                 <td class="px-4 py-3">{{ $pedido->fecha }}</td>
                                 <td class="px-4 py-3">{{ $pedido->hora }}</td>
                                 <td class="px-4 py-3">{{ $pedido->casino }}</td>
@@ -164,6 +164,7 @@
                                 <td class="px-4 py-3 space-y-1">
                                     @php
                                         $pedidoData = $pedido->toArray();
+
                                         $pedidoData['platos'] = $pedido->detalles->map(function ($detalle) {
                                             return [
                                                 'id'     => $detalle->id,
@@ -172,6 +173,11 @@
                                                 'nota'   => $detalle->nota_cliente ?: null,
                                             ];
                                         })->toArray();
+
+                                        $pedidoData['usuario'] = $pedido->usuario ? [
+                                            'id'   => $pedido->usuario->id,
+                                            'nombre' => $pedido->usuario->nombre,
+                                        ] : null;
                                     @endphp
 
                                     <a href="#"

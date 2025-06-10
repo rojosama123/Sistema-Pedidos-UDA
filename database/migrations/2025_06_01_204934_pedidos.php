@@ -10,7 +10,8 @@ class pedidos extends Migration
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->unsignedBigInteger('user_id'); // Relación con el usuario que realiza el pedido
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->date('fecha');
             $table->time('hora');
             $table->string('estado');

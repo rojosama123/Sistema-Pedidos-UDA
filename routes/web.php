@@ -37,4 +37,6 @@ Route::delete('/menu/{fecha}', [MenuItemController::class, 'destroy'])->name('me
 
 Route::put('/pedidos/{pedido}/cambiar-estado', [PedidoController::class, 'cambiarEstado'])->name('pedidos.cambiarEstado');
 
-//Route::get('/menu/{casino}', [MenuController::class, 'mostrarMenu']);
+Route::middleware(['auth'])->group(function () {
+    Route::post('/pedido/guardar', [PedidoController::class, 'guardar'])->name('pedido.guardar');
+});

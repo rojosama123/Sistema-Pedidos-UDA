@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Models\PedidoDetalle;
+use Illuminate\Support\Facades\Auth;
 
 class PedidoController extends Controller
 {
@@ -19,7 +21,7 @@ class PedidoController extends Controller
 
         $casino = session('casino_actual', 'Casino Norte');
 
-        $pedidos = Pedido::with('detalles') // relación en el modelo Pedido
+        $pedidos = Pedido::with('detalles', 'usuario') // relación en el modelo Pedido
             ->whereDate('fecha', $hoy)
             ->where('casino', $casino)
             ->orderBy('hora')
@@ -49,7 +51,7 @@ class PedidoController extends Controller
 
         $casino = session('casino_actual', 'Casino Norte');
 
-        $query = Pedido::with('detalles')->where('casino', $casino);
+        $query = Pedido::with('detalles', 'usuario')->where('casino', $casino);
 
         switch ($request->filtro_fecha) {
             case 'hoy':
@@ -82,6 +84,34 @@ class PedidoController extends Controller
 
         return view('pedidos.historial', compact('pedidos', 'casino', 'orden'));
     }
-
     
+     public function guardar(Request $request)
+    {
+        $request->validate([
+            'casino' => 'required|string',
+            'platos' => 'required|array',
+            'platos.*.nombre' => 'required|string',
+            'platos.*.precio' => 'required|numeric',
+            'platos.*.nota' => 'nullable|string'
+        ]);
+
+        $pedido = Pedido::create([
+            'user_id' => Auth::id(),
+            'fecha' => Carbon::now()->toDateString(),
+            'hora' => Carbon::now()->toTimeString(),
+            'estado' => 'pendiente',
+            'casino' => $request->casino,
+        ]);
+
+        foreach ($request->platos as $plato) {
+            PedidoDetalle::create([
+                'pedido_id' => $pedido->id,
+                'plato' => $plato['nombre'],
+                'precio' => $plato['precio'],
+                'nota_cliente' => $plato['nota'] ?? null,
+            ]);
+        }
+
+        return response()->json(['success' => true, 'mensaje' => 'Pedido registrado correctamente.']);
+    }
 }
