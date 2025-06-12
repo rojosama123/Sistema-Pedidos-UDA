@@ -16,7 +16,7 @@ class PedidoSeeder extends Seeder
         $casinos = ['Casino Norte', 'Casino Sur', 'Casino Teplinsky'];
         $estados = ['Entregado', 'En Preparación', 'Listo para retirar', 'Cancelado'];
 
-        foreach (range(1, 2) as $i) {
+        foreach (range(1, 30) as $i) {
             $pedido = Pedido::create([
                 'user_id' => $faker->numberBetween(1, 2), // Asumiendo que tienes 10 usuarios
                 'fecha' => Carbon::today()->format('Y-m-d'),
