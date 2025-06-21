@@ -27,7 +27,14 @@ class MenuItemController extends Controller
     public function create(Request $request)
     {
         $casino = session('casino_actual', 'Casino Norte');
-        return view('menu.create_menu', compact('casino'));
+        $hoy = Carbon::today()->toDateString();
+
+        // Asumiendo tienes un modelo Menu con 'fecha' y 'casino'
+        $menuExistente = \App\Models\MenuItem::where('casino', $casino)
+                        ->whereDate('fecha', $hoy)
+                        ->exists();
+
+        return view('menu.create_menu', compact('casino', 'menuExistente'));
     }
 
     public function store(Request $request)

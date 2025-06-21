@@ -10,7 +10,7 @@ class Pedido extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nombre',
+        'user_id',
         'fecha',
         'hora',
         'estado',
@@ -22,4 +22,9 @@ class Pedido extends Model
     {
         return $this->hasMany(PedidoDetalle::class);
     }
+    public function usuario()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
+    }
+
 }

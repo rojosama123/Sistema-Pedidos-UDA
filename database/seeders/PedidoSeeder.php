@@ -18,7 +18,7 @@ class PedidoSeeder extends Seeder
 
         foreach (range(1, 30) as $i) {
             $pedido = Pedido::create([
-                'nombre' => $faker->name,
+                'user_id' => $faker->numberBetween(1, 2), // Asumiendo que tienes 10 usuarios
                 'fecha' => Carbon::today()->format('Y-m-d'),
                 'hora' => $faker->time('H:i'),
                 'estado' => $faker->randomElement($estados),
@@ -34,7 +34,7 @@ class PedidoSeeder extends Seeder
                         'Lasaña de carne', 'Pollo al curry', 'Ensalada César', 'Sopa de lentejas',
                         'Fideos al pesto', 'Cazuela de vacuno', 'Tarta de verduras', 'Empanada de pino'
                     ]),
-                    'precio' => $faker->randomFloat(2, 2, 8),
+                    'precio' => $faker->randomFloat(0, 2600, 13000),
                     'nota_cliente' => $faker->boolean(70) ? $faker->sentence(4) : null,
                 ]);
             }

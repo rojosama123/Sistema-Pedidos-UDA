@@ -5,6 +5,7 @@ use App\Http\Controllers\PedidoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\MenuController;
 
 // Página de login en la raíz
 Route::get('/', function () {
@@ -23,7 +24,7 @@ Route::get('/seleccion_casino', function () {
     return view('seleccion_casino');
 })->middleware('auth')->name('seleccion_casino');
 
-Route::get('/pedidos/casino/{nombre}', [PedidoController::class, 'mostrar'])->name('pedidos.casino');
+Route::get('/pedidos/casino/{nombre}', [MenuController::class, 'mostrarMenu'])->name('pedidos.casino');
 
 Route::get('/historial', [PedidoController::class, 'historial'])->name('pedidos.historial');
 
@@ -35,3 +36,7 @@ Route::put('/menu/{fecha}', [MenuItemController::class, 'update'])->name('menu.u
 Route::delete('/menu/{fecha}', [MenuItemController::class, 'destroy'])->name('menu.destroy');
 
 Route::put('/pedidos/{pedido}/cambiar-estado', [PedidoController::class, 'cambiarEstado'])->name('pedidos.cambiarEstado');
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/pedido/guardar', [PedidoController::class, 'guardar'])->name('pedido.guardar');
+});
