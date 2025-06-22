@@ -35,6 +35,10 @@
                    class="block py-2 px-4 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
                    🍽️ Visualización de Menús
                 </a>
+                <a href="{{ route('reseñas.index') }}"
+                   class="block py-2 px-4 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
+                   🌟 Ver Reseñas
+                </a>
                 <button @click="open = true" 
                         class="block w-full text-left py-2 px-4 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
                     🔁 Cambiar de Casino
@@ -53,7 +57,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-8 overflow-y-auto space-y-8">
+    <main class="flex-1 p-8 overflow-y-auto">
 
         <!-- Modal: Cambiar Casino -->
         <div x-show="open" x-transition class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
@@ -110,14 +114,25 @@
         </div>
 
         <!-- Casino actual -->
-        <div class="text-center">
+        <div class="text-center mb-8">
             <h2 class="text-3xl font-bold text-gray-800">Casino Actual:</h2>
             <p class="text-2xl font-semibold text-blue-600 mt-1" x-text="casinoActual"></p>
         </div>
+        
+        <!-- Promedio de calificación -->
+        <div class="text-center mb-6">
+            <h3 class="text-xl font-semibold text-gray-700">Promedio de Calificación:</h3>
+            <p class="text-lg text-yellow-500 font-bold">
+                @for ($i = 1; $i <= 5; $i++)
+                    <span class="{{ $i <= round($promedio) ? 'text-yellow-400' : 'text-gray-300' }}">★</span>
+                @endfor
+                <span class="text-sm text-gray-600 ml-2">({{ number_format($promedio, 2) }} estrellas)</span>
+            </p>
+        </div>
 
         <!-- Pedidos del Día -->
-        <div>
-            <h1 class="text-2xl font-bold mb-4">📋 Pedidos del Día</h1>
+        <div class="space-y-6">
+            <h1 class="text-2xl font-bold">📋 Pedidos del Día</h1>
 
             <div class="bg-white rounded-xl shadow overflow-x-auto">
                 <table class="min-w-full text-sm text-left">

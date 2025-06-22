@@ -40,3 +40,5 @@ Route::put('/pedidos/{pedido}/cambiar-estado', [PedidoController::class, 'cambia
 Route::middleware(['auth'])->group(function () {
     Route::post('/pedido/guardar', [PedidoController::class, 'guardar'])->name('pedido.guardar');
 });
+
+Route::get('/reseñas', [\App\Http\Controllers\ReviewController::class, 'index'])->name('reseñas.index');

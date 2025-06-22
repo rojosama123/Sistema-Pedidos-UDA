@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MenuItem;
 use Illuminate\Support\Carbon;
+use App\Models\Review;
 
 class MenuController extends Controller
 {
@@ -16,6 +17,7 @@ class MenuController extends Controller
                     ->where('casino', $casino)
                     ->get();
 
-        return view('pedidos.index', compact('platos', 'casino'));
+        $promedio = Review::where('casino', $casino)->avg('calificacion');
+        return view('pedidos.index', compact('platos', 'casino', 'promedio'));
     }
 }
