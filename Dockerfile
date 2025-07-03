@@ -37,7 +37,7 @@ RUN composer install --no-dev --optimize-autoloader \
     && npm run build
 
 # Expone el puerto que Railway usará
-EXPOSE 8000
+EXPOSE 8080
 
 # Comandos al iniciar el contenedor
 CMD php artisan config:clear \
