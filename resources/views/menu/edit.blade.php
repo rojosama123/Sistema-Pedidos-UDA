@@ -29,6 +29,10 @@
                    class="block py-2 px-4 rounded-lg font-medium transition {{ request()->routeIs('menu.edit') ? 'bg-blue-100 text-blue-800' : 'hover:bg-gray-100 text-gray-700' }}">
                    🍽️ Visualización de Menús
                 </a>
+                <a href="{{ route('reseñas.index') }}"
+                   class="block py-2 px-4 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
+                   🌟 Ver Reseñas
+                </a>
             </nav>
         </div>
         <div class="px-6 py-4 space-y-2 border-t">
@@ -43,10 +47,10 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-8 overflow-y-auto space-y-8">
+    <main class="flex-1 p-8 overflow-y-auto">
 
         <!-- Casino actual -->
-        <div class="text-center">
+        <div class="text-center mb-8">
             <h2 class="text-3xl font-bold text-gray-800">Casino Actual:</h2>
             <p class="text-2xl font-semibold text-blue-600 mt-1" x-text="casinoActual"></p>
         </div>

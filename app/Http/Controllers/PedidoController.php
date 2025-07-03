@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\PedidoDetalle;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Review;
 
 class PedidoController extends Controller
 {
@@ -27,7 +28,10 @@ class PedidoController extends Controller
             ->orderBy('hora')
             ->paginate(10);
 
-        return view('dashboard', compact('pedidos', 'casino'));
+        $promedio = Review::where('casino', $casino)->avg('calificacion');
+
+
+        return view('dashboard', compact('pedidos', 'casino', 'promedio'));
     }
 
     public function cambiarEstado(Request $request, Pedido $pedido)
@@ -52,6 +56,7 @@ class PedidoController extends Controller
         $casino = session('casino_actual', 'Casino Norte');
 
         $query = Pedido::with('detalles', 'usuario')->where('casino', $casino);
+        $promedio = Review::where('casino', $casino)->avg('calificacion');
 
         switch ($request->filtro_fecha) {
             case 'hoy':
@@ -82,7 +87,7 @@ class PedidoController extends Controller
 
         $pedidos = $query->orderBy('id', $orden)->paginate(10);
 
-        return view('pedidos.historial', compact('pedidos', 'casino', 'orden'));
+        return view('pedidos.historial', compact('pedidos', 'casino', 'orden', 'promedio'));
     }
     
      public function guardar(Request $request)

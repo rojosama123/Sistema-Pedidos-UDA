@@ -6,6 +6,7 @@ use App\Models\MenuItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\Review; 
 
 class MenuItemController extends Controller
 {
@@ -20,8 +21,9 @@ class MenuItemController extends Controller
             ->orderBy('created_at', 'desc')
             ->get()
             ->groupBy('fecha');
+        $promedio = Review::where('casino', $casino)->avg('calificacion');
 
-        return view('menu.index', compact('menusAgrupados', 'casino'));
+        return view('menu.index', compact('menusAgrupados', 'casino', 'promedio'));
     }
 
     public function create(Request $request)

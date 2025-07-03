@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
         usuarios_seed::class,
         PedidoSeeder::class,
+        ReviewSeeder::class,
     ]);
 
     }
