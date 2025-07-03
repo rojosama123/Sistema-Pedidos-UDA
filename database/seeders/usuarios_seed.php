@@ -3,14 +3,14 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class usuarios_seed extends Seeder
 {
     public function run(): void
     {
-        DB::table('users')->insert([
+        $usuarios = [
             [
                 'nombre' => 'Esteban Estudiante',
                 'rut' => '12345678-9',
@@ -35,6 +35,13 @@ class usuarios_seed extends Seeder
                 'tipo_usuario' => 'casino',
                 'remember_token' => null,
             ],
-        ]);
+        ];
+
+        foreach ($usuarios as $data) {
+            User::updateOrCreate(
+                ['rut' => $data['rut']], // condición única
+                $data                     // datos a insertar o actualizar
+            );
+        }
     }
 }
