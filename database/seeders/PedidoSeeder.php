@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Pedido;
 use App\Models\PedidoDetalle;
 use Illuminate\Support\Carbon;
+use App\Models\User;
 
 class PedidoSeeder extends Seeder
 {
@@ -16,16 +17,26 @@ class PedidoSeeder extends Seeder
         $casinos = ['Casino Norte', 'Casino Sur', 'Casino Teplinsky'];
         $estados = ['Entregado', 'En Preparación', 'Listo para retirar', 'Cancelado'];
 
+        // Obtener IDs de usuarios existentes
+        $userIds = User::pluck('id')->toArray();
+
+        // Validar que haya usuarios
+        if (empty($userIds)) {
+            $this->command->warn('❗ No se encontraron usuarios en la base de datos. Seeder cancelado.');
+            return;
+        }
+
+        // Insertar 30 pedidos aleatorios
         foreach (range(1, 30) as $i) {
             $pedido = Pedido::create([
-                'user_id' => $faker->numberBetween(1, 2), // Asumiendo que tienes 10 usuarios
+                'user_id' => $faker->randomElement($userIds),
                 'fecha' => Carbon::today()->format('Y-m-d'),
                 'hora' => $faker->time('H:i'),
                 'estado' => $faker->randomElement($estados),
                 'casino' => $faker->randomElement($casinos),
             ]);
 
-            // Añadir de 1 a 4 platos por pedido
+            // Agregar de 1 a 4 platos por pedido
             $numPlatos = rand(1, 4);
             for ($j = 0; $j < $numPlatos; $j++) {
                 PedidoDetalle::create([
@@ -39,5 +50,7 @@ class PedidoSeeder extends Seeder
                 ]);
             }
         }
+
+        $this->command->info('✅ Se generaron 30 pedidos con sus respectivos detalles.');
     }
 }

@@ -16,6 +16,7 @@ class usuarios extends Migration
             $table->string('password');
             $table->string('tipo_usuario');
             $table->rememberToken();
+            $table->timestamps();
         });
     }
 
