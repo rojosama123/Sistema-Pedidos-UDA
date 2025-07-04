@@ -86,7 +86,6 @@
                             class="w-full px-4 py-2 md:px-5 md:py-3 rounded-lg bg-[#3A5650] border border-[#4A6A63] focus:border-[#E8C547] focus:ring-1 focus:ring-[#E8C547] outline-none transition duration-200 placeholder-gray-400 text-sm md:text-base" 
                         />
                     </div>
-                    
                     <button 
                         type="submit" 
                         class="w-full py-2 md:py-3 rounded-lg bg-[#E8C547] text-[#2D4A44] font-medium hover:bg-[#F0D05A] focus:outline-none focus:ring-2 focus:ring-[#E8C547] focus:ring-offset-2 focus:ring-offset-[#2D4A44] transition duration-200 text-sm md:text-base"
@@ -121,5 +120,14 @@
             </div>
         </div>
     </div>
+    @if(session('status') && (str_contains(session('status'), 'Contraseña actualizada.') || str_contains(session('status'), 'password') || str_contains(session('status'), 'restablecida') || str_contains(session('status'), 'reset')))
+    <div id="modalExito" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full text-center">
+            <h2 class="text-xl font-bold text-green-700 mb-4">¡Contraseña cambiada con éxito!</h2>
+            <p class="text-gray-700 mb-6">Ahora puedes iniciar sesión con tu nueva contraseña.</p>
+            <a href="{{ route('login') }}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-semibold">Cerrar</a>
+        </div>
+    </div>
+    @endif
 </body>
 </html>

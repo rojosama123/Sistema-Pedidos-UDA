@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         usuarios_seed::class,
         PedidoSeeder::class,
         ReviewSeeder::class,
+        menuItem_seeder::class,
     ]);
 
     }

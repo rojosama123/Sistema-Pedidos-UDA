@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateReviewsTable extends Migration
 {
     public function up()
     {
@@ -16,5 +16,9 @@ return new class extends Migration
             $table->string('casino')->nullable(); // Casino relacionado, si aplica
             $table->timestamps();
         });
+    }
+    public function down()
+    {
+        Schema::dropIfExists('reviews');
     }
 };

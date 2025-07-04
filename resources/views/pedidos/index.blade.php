@@ -184,6 +184,29 @@
                 @endforeach
             </div>
         @endif
+        {{-- Formulario de opinión --}}
+                <div class="mt-12 max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold text-primary mb-4">Deja tu opinión sobre el menú de hoy</h2>
+                    <form id="opinionForm">
+                        <textarea name="comentario" id="comentarioText" rows="4" class="w-full border border-gray-300 rounded-lg p-3 mb-4" placeholder="¿Qué te pareció el menú de hoy?"></textarea>
+                        <div class="flex items-center space-x-4">
+                            <label class="font-semibold text-primary">Calificación:</label>
+                            <select name="calificacion" id="opinionRating" class="border border-gray-300 rounded px-2 py-1">
+                                <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+                                <option value="4">⭐⭐⭐⭐ Muy bueno</option>
+                                <option value="3">⭐⭐⭐ Bueno</option>
+                                <option value="2">⭐⭐ Regular</option>
+                                <option value="1">⭐ Malo</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="submit" class="bg-accent hover:bg-primary text-white px-6 py-2 rounded font-semibold">
+                                Enviar opinión
+                            </button>
+                        </div>
+                    </form>
+                    <div id="opinionMsg" class="mt-3 text-green-600 font-semibold hidden"></div>
+                </div>
     </div>
 
     <!-- Carrito flotante -->
@@ -222,6 +245,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Agradecimiento Opinión -->
+    <div class="modal-overlay" id="modalGracias">
+        <div class="modal-content p-6 text-center">
+            <h2 class="text-2xl font-bold text-primary mb-3">¡Gracias por tu opinión!</h2>
+            <p class="text-gray-600 mb-4">Tu comentario ha sido enviado con éxito.</p>
+            <button id="cerrarGracias" class="bg-primary hover:bg-accent text-white px-6 py-2 rounded font-semibold">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal de advertencia para opinión -->
+    <div id="modalNoOpinion" class="modal-overlay fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full text-center">
+            <h2 class="text-xl font-bold text-primary mb-4">No puedes opinar</h2>
+            <p class="text-gray-700 mb-6">Solo puedes opinar si has realizado un pedido hoy en este casino.</p>
+            <button id="cerrarNoOpinion" class="bg-primary hover:bg-accent text-white px-6 py-2 rounded font-semibold">Cerrar</button>
+        </div>
+    </div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -394,6 +436,65 @@
     });
 });
 
+// Formulario de opinión
+const opinionForm = document.getElementById('opinionForm');
+if(opinionForm){
+    opinionForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        const comentario = document.getElementById('comentarioText').value.trim();
+        const calificacion = document.getElementById('opinionRating').value;
+        const msg = document.getElementById('opinionMsg');
+        msg.classList.add('hidden');
+        if(!comentario){
+            msg.textContent = "Por favor escribe tu opinión.";
+            msg.classList.remove('hidden');
+            msg.classList.remove('text-green-600');
+            msg.classList.add('text-red-600');
+            return;
+        }
+        fetch("{{ route('opiniones.guardar') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ casino: "{{ $casino }}", comentario, calificacion })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success){
+                opinionForm.reset();
+                document.getElementById('modalGracias').classList.add('active');
+            }
+            else{
+                if(data.message && data.message.includes('Solo puedes opinar')){
+                    document.getElementById('modalNoOpinion').classList.add('active');
+                    document.getElementById('modalNoOpinion').classList.remove('hidden');
+                }
+            }
+        });
+    });
+}
+
+// Cerrar modal de advertencia para opinión
+document.getElementById('cerrarNoOpinion').addEventListener('click', () => {
+    document.getElementById('modalNoOpinion').classList.remove('flex');
+    document.getElementById('modalNoOpinion').classList.add('hidden');
+});
+
+// Cerrar modal de agradecimiento para opinión
+document.getElementById('cerrarGracias').addEventListener('click', () => {
+    document.getElementById('modalGracias').classList.remove('active');
+});
+
+    // Cerrar modal al hacer clic fuera del contenido
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+    });
 
 </script>
 </body>

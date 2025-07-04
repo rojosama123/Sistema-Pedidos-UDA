@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Pedido;
 use App\Models\PedidoDetalle;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 
 class PedidoSeeder extends Seeder
@@ -16,9 +17,12 @@ class PedidoSeeder extends Seeder
         $casinos = ['Casino Norte', 'Casino Sur', 'Casino Teplinsky'];
         $estados = ['Entregado', 'En Preparación', 'Listo para retirar', 'Cancelado'];
 
+        // Solo IDs de estudiantes o funcionarios
+        $userIds = User::whereIn('tipo_usuario', ['estudiante', 'funcionario'])->pluck('id')->toArray();
+
         foreach (range(1, 30) as $i) {
             $pedido = Pedido::create([
-                'user_id' => $faker->numberBetween(1, 2), // Asumiendo que tienes 10 usuarios
+                'user_id' => $faker->randomElement($userIds),
                 'fecha' => Carbon::today()->format('Y-m-d'),
                 'hora' => $faker->time('H:i'),
                 'estado' => $faker->randomElement($estados),
