@@ -18,11 +18,11 @@ class PedidoSeeder extends Seeder
         $estados = ['Entregado', 'En Preparación', 'Listo para retirar', 'Cancelado'];
 
         // Solo IDs de estudiantes o funcionarios
-        $userIds = User::whereIn('tipo_usuario', ['estudiante', 'funcionario'])->pluck('id')->toArray();
+       // $userIds = User::whereIn('tipo_usuario', ['estudiante', 'funcionario'])->pluck('id')->toArray();
 
         foreach (range(1, 30) as $i) {
             $pedido = Pedido::create([
-                'user_id' => $faker->randomElement($userIds),
+                'user_id' => $faker->numberBetween(1, 2),
                 'fecha' => Carbon::today()->format('Y-m-d'),
                 'hora' => $faker->time('H:i'),
                 'estado' => $faker->randomElement($estados),

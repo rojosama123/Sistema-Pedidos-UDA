@@ -16,6 +16,6 @@ class MenuController extends Controller
                     ->where('casino', $casino)
                     ->get();
 
-        return view('pedidos.index', compact('platos', 'casino', 'promedio'));
+        return view('pedidos.index', compact('platos', 'casino'));
     }
 }
